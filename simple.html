@@ -3,219 +3,284 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Day Number Calculator</title>
+    <title>Dynamic Clock & Calendar</title>
     <style>
-        /* General Styling */
         body {
-            font-family: Arial, sans-serif;
-            text-align: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
-            background: linear-gradient(45deg, red, orange, yellow, green, cyan, blue, indigo, violet);
-            background-size: 500% 500%;
-            animation: gradientMove 10s infinite alternate ease-in-out;
             display: flex;
-            flex-direction: column;
             align-items: center;
-            min-height: 100vh;
-            justify-content: flex-start;
-            color: white;
-            padding: 30px 0;
-        }
-
-        @keyframes gradientMove {
-            0% { background-position: 0% 0%; }
-            50% { background-position: 50% 50%; }
-            100% { background-position: 100% 100%; }
-        }
-
-        /* Spacing */
-        .container {
-            margin-bottom: 30px;
-        }
-
-        /* Real-time Clock */
-        #real-time {
-            font-size: 1.5em;
-            padding: 15px;
-            background: rgba(0, 0, 0, 0.8);
-            border: 3px solid transparent;
-            border-radius: 10px;
-            animation: neonBorder 1.5s infinite alternate;
-        }
-
-        @keyframes neonBorder {
-            0% { border-color: #FFD700; box-shadow: 0 0 10px #FFD700; }
-            50% { border-color: #FF4500; box-shadow: 0 0 15px #FF4500; }
-            100% { border-color: #00FF00; box-shadow: 0 0 20px #00FF00; }
-        }
-
-        /* Clock Styling */
-        .clock-container {
-            margin-top: 30px;
-            display: flex;
             justify-content: center;
-            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(45deg, red, orange, yellow, green, cyan, blue, indigo, violet);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
         }
 
-        .clock-face {
+        @keyframes gradient {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .container {
+            background-color: rgba(0, 0, 0, 0.6);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        #digital-clock {
+            font-size: 3em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        #analog-clock {
+            position: relative;
             width: 200px;
             height: 200px;
-            border: 8px solid #222;
+            margin: 20px auto;
+            background: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9hqhKfiR5PQK0Da9h2Kcg4Hm_eNFVO6zOqw&s') no-repeat center/cover;
             border-radius: 50%;
-            background: radial-gradient(circle, #333 30%, #000);
-            position: relative;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
+            transition: transform 0.3s ease;
         }
 
-        .hand {
+        #analog-clock:hover {
+            transform: scale(1.1);
+        }
+
+        #analog-clock .number {
             position: absolute;
-            transform-origin: bottom;
-            bottom: 50%;
-            left: 50%;
-            border-radius: 5px;
+            width: 20px;
+            height: 20px;
+            text-align: center;
+            font-size: 1em;
+            font-weight: bold;
+            color: white;
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
 
-        .hour-hand { width: 8px; height: 50px; background: #FFD700; transform: translateX(-50%) rotate(0deg); }
-        .minute-hand { width: 6px; height: 70px; background: #00FF00; transform: translateX(-50%) rotate(0deg); }
-        .second-hand { width: 3px; height: 80px; background: red; transform: translateX(-50%) rotate(0deg); }
+        #analog-clock:hover .number {
+            opacity: 1;
+        }
 
-        .center-circle {
-            width: 14px;
-            height: 14px;
-            background: #FFF;
-            border-radius: 50%;
+        #analog-clock .twelve {
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        #analog-clock .three {
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        #analog-clock .six {
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        #analog-clock .nine {
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        #analog-clock .hour,
+        #analog-clock .minute,
+        #analog-clock .second {
+            position: absolute;
+            transform-origin: 50% 50%;
+            border-radius: 5px; /* Rounded hands */
+        }
+
+        #analog-clock .hour {
+            width: 3%;
+            height: 25%;
+            top: 25%;
+            left: 48.5%;
+            background: linear-gradient(to bottom, #333, #111); /* Gradient */
+            opacity: 0.9;
+            box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3), /* Outer shadow */
+                        inset 1px 1px 3px rgba(0, 0, 0, 0.4); /* Inner shadow */
+            transform: rotate(0deg); /* Initial rotation */
+        }
+
+        #analog-clock .minute {
+            width: 2%;
+            height: 35%;
+            top: 15%;
+            left: 49%;
+            background: linear-gradient(to bottom, #666, #444); /* Gradient */
+            opacity: 0.9;
+            box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3), /* Outer shadow */
+                        inset 1px 1px 3px rgba(0, 0, 0, 0.4); /* Inner shadow */
+            transform: rotate(0deg); /* Initial rotation */
+        }
+
+        #analog-clock .second {
+            width: 1%;
+            height: 40%;
+            top: 10%;
+            left: 49.5%;
+            background: red;
+            opacity: 1;
+            box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5), /* Outer shadow */
+                        inset 1px 1px 3px rgba(0, 0, 0, 0.5); /* Inner shadow */
+            transform: rotate(0deg); /* Initial rotation */
+        }
+
+        /* Add a small circle in the center */
+        #analog-clock::before {
+            content: '';
             position: absolute;
             top: 50%;
             left: 50%;
+            width: 8px;
+            height: 8px;
+            background-color: black;
+            border-radius: 50%;
             transform: translate(-50%, -50%);
+            z-index: 10; /* Ensure it's on top */
+            box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); /* Shadow on the center circle */
         }
 
-        /* Calendar Styling */
+        #date {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+        }
+
         #calendar {
-            margin-top: 40px;
-            background: rgba(0, 0, 0, 0.7);
-            padding: 15px;
-            border-radius: 15px;
-        }
-
-        table {
-            border-collapse: collapse;
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+            width: 350px;
             margin: 0 auto;
-            width: 90%;
-            color: white;
         }
 
-        th, td {
-            border: 1px solid #FFD700;
-            padding: 12px;
-            width: 50px;
+        .day {
+            padding: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
             text-align: center;
             cursor: pointer;
+            transition: background-color 0.3s ease;
         }
 
-        th {
-            background-color: #444;
-            color: #FFD700;
+        .day:hover {
+            background-color: rgba(255, 255, 255, 0.2);
         }
 
-        .selected-date {
-            background-color: blue !important;
+        .weekend {
+            color: #f44336;
         }
 
-        /* Cour Count */
-        #cour-count {
-            position: fixed;
-            bottom: 10px;
-            font-size: 1.5em;
-            background: rgba(0, 0, 0, 0.7);
-            padding: 10px;
-            border-radius: 10px;
-            display: none;
+        .today {
+            background-color: rgba(255, 193, 7, 0.7);
+            color: black;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
-    <!-- Real-time Clock -->
     <div class="container">
-        <div id="real-time"></div>
-    </div>
-
-    <!-- Analog Clock -->
-    <div class="container">
-        <div class="clock-container">
-            <div class="clock-face">
-                <div class="hand hour-hand" id="hour-hand"></div>
-                <div class="hand minute-hand" id="minute-hand"></div>
-                <div class="hand second-hand" id="second-hand"></div>
-                <div class="center-circle"></div>
-            </div>
+        <div id="digital-clock"></div>
+        <div id="analog-clock">
+            <div class="number twelve">12</div>
+            <div class="number three">3</div>
+            <div class="number six">6</div>
+            <div class="number nine">9</div>
+            <div class="hour"></div>
+            <div class="minute"></div>
+            <div class="second"></div>
         </div>
+        <div id="date"></div>
+        <div id="calendar"></div>
     </div>
-    
-    <!-- Calendar -->
-    <div class="container">
-        <div id="calendar">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Sun</th>
-                        <th>Mon</th>
-                        <th>Tue</th>
-                        <th>Wed</th>
-                        <th>Thu</th>
-                        <th>Fri</th>
-                        <th>Sat</th>
-                    </tr>
-                </thead>
-                <tbody id="calendar-body"></tbody>
-            </table>
-        </div>
-    </div>
-
-    <div id="cour-count">Today's Cour Count: 0</div>
 
     <script>
         function updateClock() {
-            let now = new Date();
-            document.getElementById('real-time').innerText = now.toLocaleString();
-            
-            let hours = now.getHours() % 12;
-            let minutes = now.getMinutes();
-            let seconds = now.getSeconds();
-            
-            let hourDeg = (hours * 30) + (minutes * 0.5);
-            let minuteDeg = (minutes * 6);
-            let secondDeg = (seconds * 6);
-            
-            document.getElementById('hour-hand').style.transform = `translateX(-50%) rotate(${hourDeg}deg)`;
-            document.getElementById('minute-hand').style.transform = `translateX(-50%) rotate(${minuteDeg}deg)`;
-            document.getElementById('second-hand').style.transform = `translateX(-50%) rotate(${secondDeg}deg)`;
+            const now = new Date();
+
+            // Digital Clock
+            let hours = now.getHours();
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const seconds = now.getSeconds().toString().padStart(2, '0');
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+
+            hours = hours % 12;
+            hours = hours ? hours : 12;
+
+            const timeString = `${hours}:${minutes}:${seconds} ${ampm}`;
+            document.getElementById('digital-clock').textContent = timeString;
+
+            // Analog Clock
+            const hourHand = document.querySelector('.hour');
+            const minuteHand = document.querySelector('.minute');
+            const secondHand = document.querySelector('.second');
+
+            const hourRotation = (30 * hours) + (minutes / 2);
+            const minuteRotation = 6 * minutes + (seconds / 10); // Smooth minute hand
+            const secondRotation = 6 * seconds;
+
+            hourHand.style.transform = `rotate(${hourRotation}deg)`;
+            minuteHand.style.transform = `rotate(${hourRotation}deg)`;
+            minuteHand.style.transform = `rotate(${minuteRotation}deg)`;
+            secondHand.style.transform = `rotate(${secondRotation}deg)`;
+        }
+
+        function updateDate() {
+            const now = new Date();
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('date').textContent = now.toLocaleDateString(undefined, options);
         }
 
         function generateCalendar() {
-            const calendarBody = document.getElementById('calendar-body');
-            const date = new Date();
-            date.setDate(1);
-            const firstDay = date.getDay();
-            const lastDate = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
-            calendarBody.innerHTML = "";
-            let row = document.createElement('tr');
-            for (let i = 0; i < firstDay; i++) row.appendChild(document.createElement('td'));
-            for (let day = 1; day <= lastDate; day++) {
-                const cell = document.createElement('td');
-                cell.innerText = day;
-                cell.onclick = () => cell.classList.toggle('selected-date');
-                row.appendChild(cell);
-                if ((firstDay + day) % 7 === 0) {
-                    calendarBody.appendChild(row);
-                    row = document.createElement('tr');
-                }
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = now.getMonth();
+            const firstDayOfMonth = new Date(year, month, 1);
+            const lastDayOfMonth = new Date(year, month + 1, 0);
+            const daysInMonth = lastDayOfMonth.getDate();
+            const startingDay = firstDayOfMonth.getDay();
+
+            let calendarHTML = '';
+
+            for (let i = 0; i < startingDay; i++) {
+                calendarHTML += '<div class="day"></div>';
             }
-            calendarBody.appendChild(row);
+
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dayOfWeek = (startingDay + day - 1) % 7;
+                let dayClass = 'day';
+                if (dayOfWeek === 0 || dayOfWeek === 6) {
+                    dayClass += ' weekend';
+                }
+                if (day === now.getDate()) {
+                    dayClass += ' today';
+                }
+                calendarHTML += `<div class="${dayClass}">${day}</div>`;
+            }
+
+            document.getElementById('calendar').innerHTML = calendarHTML;
         }
 
-        setInterval(updateClock, 1000);
         updateClock();
+        updateDate();
+        setInterval(updateClock, 1000);
         generateCalendar();
     </script>
 </body>
